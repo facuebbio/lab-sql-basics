@@ -108,11 +108,15 @@ group by account_id, type
 order by transaction_type;
 
 ## 21. QUERY 21 - Continuing with the previous example, rank the top 10 account_ids based on their difference.
-SELECT 
-    account_id, 
-    SUM(amount) - balance, 0) AS total_amount_difference
-FROM trans
-GROUP BY account_id
-ORDER BY total_amount_difference
-LIMIT 10;
+select * from trans;
+select
+    account_id,
+    round(sum(case when type = "PRIJEM" then amount else 0 end) - sum(case when type = "VYDAJ" then amount else 0 end), 0) as difference_amount
+from
+    trans
+group by
+    account_id
+order by
+    difference_amount desc
+limit 10;
  
